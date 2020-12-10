@@ -62,11 +62,5 @@
     "markdownlint-cli": "0.26.0",
     "typescript": "3.9.7",
     "update-ts-references": "2.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint:changed",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }
