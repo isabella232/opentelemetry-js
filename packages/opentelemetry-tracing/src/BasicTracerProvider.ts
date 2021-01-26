@@ -27,7 +27,11 @@ import { DEFAULT_CONFIG } from './config';
 import { MultiSpanProcessor } from './MultiSpanProcessor';
 import { NoopSpanProcessor } from './NoopSpanProcessor';
 import { SDKRegistrationConfig, TracerConfig } from './types';
-import merge = require('lodash.merge');
+
+// FIXME: our build infra is incompatible with the original import
+// import merge = require('lodash.merge');
+import merge from 'lodash.merge';
+
 /**
  * This class represents a basic tracer provider which platform libraries can extend
  */
