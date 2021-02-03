@@ -332,7 +332,7 @@ export class XMLHttpRequestInstrumentation extends InstrumentationBase<XMLHttpRe
   protected _patchOpen() {
     return (original: OpenFunction): OpenFunction => {
       const plugin = this;
-      return function patchOpen(this: XMLHttpRequest, ...args): void {
+      return function instrumentedOpen(this: XMLHttpRequest, ...args): void {
         const method: string = args[0];
         const url: string = args[1];
         plugin._createSpan(this, url, method);
@@ -428,7 +428,7 @@ export class XMLHttpRequestInstrumentation extends InstrumentationBase<XMLHttpRe
     }
 
     return (original: SendFunction): SendFunction => {
-      return function patchSend(this: XMLHttpRequest, ...args): void {
+      return function instrumentedSend(this: XMLHttpRequest, ...args): void {
         const xhrMem = plugin._xhrMem.get(this);
         if (!xhrMem) {
           return original.apply(this, args);

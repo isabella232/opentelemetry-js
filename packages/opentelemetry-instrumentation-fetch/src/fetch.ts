@@ -274,7 +274,7 @@ export class FetchInstrumentation extends InstrumentationBase<
       original: (input: RequestInfo, init?: RequestInit) => Promise<Response>
     ): ((input: RequestInfo, init?: RequestInit) => Promise<Response>) => {
       const plugin = this;
-      return function patchConstructor(
+      return function instrumentedConstructor(
         this: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
         input: RequestInfo,
         init?: RequestInit
@@ -325,17 +325,18 @@ export class FetchInstrumentation extends InstrumentationBase<
           }
         }
 
+        const originalThis = this;
         return new Promise((resolve, reject) => {
           return api.context.with(
             api.setSpan(api.context.active(), span),
-            () => {
+            function instrumentedConstructorExecutor () {
               plugin._addHeaders(options, url);
               plugin._tasksCount++;
               return original
-                .apply(this, [url, options])
+                .apply(originalThis, [url, options])
                 .then(
-                  onSuccess.bind(this, span, resolve),
-                  onError.bind(this, span, reject)
+                  onSuccess.bind(originalThis, span, resolve),
+                  onError.bind(originalThis, span, reject)
                 );
             }
           );

@@ -89,7 +89,7 @@ export class MyPlugin extends InstrumentationBase {
   private _patchMethodName(): (original) => any {
     const plugin = this;
     return function methodName(original) {
-      return function patchMethodName(this: any): PromiseOrValue<module_name_to_be_patched.methodName> {
+      return function instrumentedMethodName(this: any): PromiseOrValue<module_name_to_be_patched.methodName> {
         console.log('methodName', arguments);
         return original.apply(this, arguments);
       };
@@ -99,7 +99,7 @@ export class MyPlugin extends InstrumentationBase {
   private _patchMainMethodName(): (original) => any {
     const plugin = this;
     return function mainMethodName(original) {
-      return function patchMainMethodName(this: any): PromiseOrValue<module_name_to_be_patched.mainMethodName> {
+      return function instrumentedMainMethodName(this: any): PromiseOrValue<module_name_to_be_patched.mainMethodName> {
         console.log('mainMethodName', arguments);
         return original.apply(this, arguments);
       };
@@ -134,7 +134,7 @@ export class MyPlugin extends InstrumentationBase {
   private _patchOpen() {
     return (original: OpenFunction): OpenFunction => {
       const plugin = this;
-      return function patchOpen(this: XMLHttpRequest, ...args): void {
+      return function instrumentedOpen(this: XMLHttpRequest, ...args): void {
         console.log('open', arguments);
         return original.apply(this, args);
       };
