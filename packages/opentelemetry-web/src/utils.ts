@@ -244,14 +244,14 @@ function filterResourcesForSpan(
       timeInputToHrTime(resource[PTN.RESPONSE_END])
     );
 
-    // In some rare cases endTime > resourceEndTime by a very small margin (1-2ms)
-    const deltaThreshold = 5000000;
+    // In some rare cases endTime > resourceEndTime by a some small margin
+    const threshold = 15000000; //15ms
     return (
       resource.initiatorType.toLowerCase() ===
         (initiatorType || 'xmlhttprequest') &&
       resource.name === spanUrl &&
       resourceStartTime >= startTime &&
-      Math.abs(resourceEndTime - endTime) < deltaThreshold
+      resourceEndTime - threshold <= endTime
     );
   });
 
